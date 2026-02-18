@@ -15,11 +15,15 @@ const express = require('express');
 
 const tarefasRouter = require('../src/routes/tarefas');
 
+const errorMiddleware = require('./middleware/errorMiddleware'); // usar apos rotas
+
 const app = express();
 
 app.use(express.json());
 
 app.use('/tarefas', tarefasRouter);
+
+app.use(errorMiddleware);
 
 const porta = 3000;
 
