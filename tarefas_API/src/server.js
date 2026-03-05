@@ -28,5 +28,5 @@ app.use(errorMiddleware);
 const porta = 3000;
 
 app.listen(porta, () => {
-    console.info(`Servidor rodando na porta http://localhost:${porta}`);
+    console.info(`Servidor rodando na porta http://localhost:${porta}/tarefas`);
 });
