@@ -1,6 +1,7 @@
 //Services tem toda logica sql e lancar erros necessarios para o controller
 
 const db = require('../db');
+const appError = require('../utils/appError');
 
 exports.listar = async () => {
     const [result] = await db.execute('SELECT * FROM tarefas');
@@ -13,7 +14,7 @@ exports.create = async ({titulo, descricao}) => {
     const descricaoFormatada = descricao ? descricao.trim() : null; // descricao?.trim() || null;
 
     if (!tituloFormatado) {
-        throw new Error('SEM_TITULO'); // aponta que deu erro e vai direto pro catch
+        throw new appError('Titulo obrigatorio!', 400); // aponta que deu erro e vai direto pro catch
     }
 
     const [result] = await db.execute(
@@ -29,7 +30,7 @@ exports.atualizar = async ({id, titulo, descricao}) => {
     const descricaoFormatada = descricao ? descricao.trim() : null;
 
     if (!tituloFormatado) {
-        throw new Error('SEM_TITULO');
+        throw new appError('Titulo obrigatorio!', 400);
     }
 
     const [result] = await db.execute(
@@ -39,7 +40,7 @@ exports.atualizar = async ({id, titulo, descricao}) => {
     );
 
     if (result.affectedRows === 0) {
-        throw new Error('NOT_FOUND');
+        throw new appError('Tarefa não encontrada', 404);
     }
 
     return {id};
@@ -54,7 +55,7 @@ exports.deletar = async ({id}) => {
     );
 
     if (result.affectedRows === 0) {
-        throw new Error('NOT_FOUND');
+        throw new appError('Tarefa não encontrada!', 404);
     }
 
     return {id};
